@@ -1,0 +1,60 @@
+//+------------------------------------------------------------------+
+//|                                              ExpertAdvisor.mq5 |
+//|                                             Fardus Hasan Raju |
+//|                                            https://www.mql5.com |
+//+------------------------------------------------------------------+
+#property copyright "Fardus Hasan Raju And Samu"
+#property link      "https://www.mql5.com"
+#property version   "1.00"
+#property strict
+
+input double lot = 0.1; // Lots
+input double stopLossPips = 100; // Stop Loss (in pips)
+input double takeProfitPips = 100; // Take Profit (in pips)
+input int magicNumber = 1234; // Magic Number
+input int breakEvenPips = 100; // Break Even (in pips)
+
+datetime LastActionTime = 0;
+
+//+------------------------------------------------------------------+
+//| Expert initialization function                                   |
+//+------------------------------------------------------------------+
+int OnInit()
+{
+   //---
+   LastActionTime = Time[0];
+   return(INIT_SUCCEEDED);
+}
+//+------------------------------------------------------------------+
+//| Expert deinitialization function                                 |
+//+------------------------------------------------------------------+
+void OnDeinit(const int reason)
+{
+   //---
+}
+//+------------------------------------------------------------------+
+//| Expert tick function                                             |
+//+------------------------------------------------------------------+
+void OnTick()
+{
+   //---
+
+   // Check if the bar is closed / check the bartime is zero
+   if (LastActionTime != Time[0])
+   { 
+      // Check if the previous candle was bullish
+      if (IsBullishCandle() == 1)
+      {
+         // open Buy order
+         OpenOrder(ORDER_TYPE_BUY, lot, 0, stopLossPips*_Point, takeProfitPips*_Point, magicNumber);
+         CloseAllBearishOrders();
+      }
+      // Check if the previous candle was bearish
+      else if (IsBearishCandle() == 1)
+      {
+         // open Sell order
+         OpenOrder(ORDER_TYPE_SELL, lot, 0, stopLossPips*_Point, takeProfitPips*_Point, magicNumber);
+         CloseAllBullishOrders();
+      }
+      // Check if any order's stop loss needs to be adjusted for break even
+      BreakEven();

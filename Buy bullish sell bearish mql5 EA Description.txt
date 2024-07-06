@@ -1,0 +1,11 @@
+I need an expert advisor for mql5 that can:
+
+- open buy order with each bullish candle close
+
+- open sell order after each bearish candle close
+
+- close any bullish trades if a bearish candle is formed
+
+- close any bearish trades if a bullish candle is formed
+
+Further, this EA should be able to trade in bias with the trend. For example it should take buys only when the candles are above the 25 moving average and should only make sell trades when candles are below the 25 moving average. It should have a stop loss, take profit, break even, lot size, magic number. N.B. Please see attached file of a project I had already started but with errors and without the trend bias aspect. 
